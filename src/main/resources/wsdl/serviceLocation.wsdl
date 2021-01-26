@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions 
+targetNamespace="http://service.proxyLocation.comviva.com" 
+xmlns:apachesoap="http://xml.apache.org/xml-soap" 
+xmlns:impl="http://service.proxyLocation.comviva.com" 
+xmlns:intf="http://service.proxyLocation.comviva.com" 
+xmlns:tns1="http://schema.proxyLocation.comviva.com" 
+xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" 
+xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+	<wsdl:types>
+		<schema elementFormDefault="qualified" targetNamespace="http://service.proxyLocation.comviva.com" xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://schema.proxyLocation.comviva.com"/>
+			<element name="getLocation">
+				<complexType>
+					<sequence>
+						<element name="proxyLocationRequest" type="tns1:proxyLocationRequest"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="proxyLocationResponse">
+				<complexType>
+					<sequence>
+						<element name="proxyLocationReturn" type="tns1:proxyLocationResponse"/>
+					</sequence>
+				</complexType>
+			</element>
+			
+			<element name="cancelLocation">
+				<complexType>
+					<sequence>
+						<element name="proxyCancelLocationRequest" type="tns1:proxyCancelLocationRequest"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="proxyCancelLocationResponse">
+				<complexType>
+					<sequence>
+						<element name="proxyCancelLocationReturn" type="tns1:proxyCancelLocationResponse"/>
+					</sequence>
+				</complexType>
+			</element>
+			
+		</schema>
+
+		<schema elementFormDefault="qualified" targetNamespace="http://schema.proxyLocation.comviva.com" xmlns="http://www.w3.org/2001/XMLSchema">
+			<complexType name="proxyLocationResponse">
+				<sequence>
+					<element name="resultCode" type="xsd:string"/>
+					<element name="resultDescription" nillable="true" type="xsd:string"/>
+					<element name="net" nillable="true" type="xsd:string"/>
+					<element name="rawData" nillable="true" type="xsd:string"/>
+					<element name="mobileCountryCode" nillable="true" type="xsd:string"/>
+					<element name="mobileNetworkCode" type="xsd:string"/>
+					<element name="locationAreaCode" nillable="true" type="xsd:string"/>
+					<element name="cellIdentityOrSAI" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<complexType name="proxyLocationRequest">
+				<sequence>
+					<element name="imsi" nillable="true" type="xsd:string"/>
+					<element name="origin" nillable="true" type="xsd:string"/>
+					<!--element name="vlrAddress" type="xsd:string"/>
+					<element name="hssAddress" nillable="true" type="xsd:string"/-->
+				</sequence>
+			</complexType>
+			
+			<complexType name="proxyCancelLocationResponse">
+				<sequence>
+					<element name="resultCode" type="xsd:string"/>
+					<element name="resultDescription" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<complexType name="proxyCancelLocationRequest">
+				<sequence>
+					<element name="imsi" nillable="true" type="xsd:string"/>
+					<element name="origin" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			
+		</schema>
+	</wsdl:types>
+
+	<wsdl:message name="proxyLocationRequest">
+		<wsdl:part element="impl:getLocation" name="parameters">
+		</wsdl:part>
+	</wsdl:message>
+
+	<wsdl:message name="proxyLocationResponse">
+		<wsdl:part element="impl:proxyLocationResponse" name="parameters">
+		</wsdl:part>
+	</wsdl:message>
+	
+	<wsdl:message name="proxyCancelLocationRequest">
+		<wsdl:part element="impl:cancelLocation" name="parameters">
+		</wsdl:part>
+	</wsdl:message>
+
+	<wsdl:message name="proxyCancelLocationResponse">
+		<wsdl:part element="impl:proxyCancelLocationResponse" name="parameters">
+		</wsdl:part>
+	</wsdl:message>
+
+	<wsdl:portType name="proxyLocationServiceImpl">
+
+		<wsdl:operation name="getLocation">
+			<wsdl:input message="impl:proxyLocationRequest" name="proxyLocationRequest">
+			</wsdl:input>
+			<wsdl:output message="impl:proxyLocationResponse" name="proxyLocationResponse">
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="cancelLocation">
+			<wsdl:input message="impl:proxyCancelLocationRequest" name="proxyCancelLocationRequest">
+			</wsdl:input>
+			<wsdl:output message="impl:proxyCancelLocationResponse" name="proxyCancelLocationResponse">
+			</wsdl:output>
+		</wsdl:operation>
+
+	</wsdl:portType>
+
+	<wsdl:binding name="proxyLocationServiceImplSoapBinding" type="impl:proxyLocationServiceImpl">
+		<wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="getLocation">
+			<wsdlsoap:operation soapAction=""/>
+			<wsdl:input name="proxyLocationRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="proxyLocationResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="cancelLocation">
+			<wsdlsoap:operation soapAction=""/>
+			<wsdl:input name="proxyCancelLocationRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="proxyCancelLocationResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		
+	</wsdl:binding>
+
+	<wsdl:service name="proxyLocationServiceImplService">
+		<wsdl:port binding="impl:proxyLocationServiceImplSoapBinding" name="proxyLocationServiceImpl">
+			<wsdlsoap:address location="http://localhost:9080/proxyLocationService/services/proxyLocationServiceImpl"/>
+		</wsdl:port>
+	</wsdl:service>
+
+</wsdl:definitions>
